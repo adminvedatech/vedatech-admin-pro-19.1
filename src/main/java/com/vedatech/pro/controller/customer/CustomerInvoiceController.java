@@ -53,6 +53,7 @@ public class CustomerInvoiceController {
         HttpStatus status = HttpStatus.OK;
 
         Customer customer = new Customer();
+
         Invoice invoice = new Invoice();
         List<InvoiceItems> invoiceItemsList = new ArrayList<>();
 
