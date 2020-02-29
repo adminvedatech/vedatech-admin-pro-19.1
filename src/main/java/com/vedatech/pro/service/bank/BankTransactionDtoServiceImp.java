@@ -1,7 +1,8 @@
-package com.vedatech.pro.service.bank.beanreader;
+package com.vedatech.pro.service.bank;
 
 import com.vedatech.pro.model.bank.BankTransactionDto;
 import com.vedatech.pro.repository.bank.BankTransactionDtoDao;
+import com.vedatech.pro.service.bank.BankTransactionDtoService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,9 +21,12 @@ public class BankTransactionDtoServiceImp implements BankTransactionDtoService {
         this.bankTransactionDtoDao = bankTransactionDtoDao;
     }
 
+
+
     @Override
     public List<BankTransactionDto> findAll() {
-        return (List<BankTransactionDto>) bankTransactionDtoDao.findAll();
+        System.out.println("BANK TRANSACTION DTO SERVICE");
+       return (List<BankTransactionDto>) this.bankTransactionDtoDao.findAll();
     }
 
     @Override

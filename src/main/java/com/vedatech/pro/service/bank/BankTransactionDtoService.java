@@ -1,4 +1,4 @@
-package com.vedatech.pro.service.bank.beanreader;
+package com.vedatech.pro.service.bank;
 
 
 import com.vedatech.pro.model.bank.BankTransactionDto;

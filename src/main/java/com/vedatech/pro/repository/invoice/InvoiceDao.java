@@ -12,6 +12,8 @@ public interface InvoiceDao extends CrudRepository<Invoice, Long> {
      public List<Invoice> findAllByCustomerId(Long id);
      public List<Invoice> findAllBySupplierId(Long id);
 
+     public Invoice findInvoiceById(Long id);
+
     @Query("SELECT e FROM Invoice e where e.supplier.id > 0")
     public List<Invoice> findAllInvoicesBySupplier();
 
@@ -30,8 +32,8 @@ public interface InvoiceDao extends CrudRepository<Invoice, Long> {
     @Query("SELECT  e FROM Invoice e where e.customer.id =?1")
     public List<Invoice> findInvoiceWithNoPolizaByCustomer(Long id);
 
-    public List<Invoice> findAllByPolizas_Empty();
+    //public List<Invoice> findAllByPolizas_Empty();
 
-    public List<Invoice> findAllByPolizas_EmptyAndCustomerId(Long id);
+   // public List<Invoice> findAllByPolizas_EmptyAndCustomerId(Long id);
 
 }

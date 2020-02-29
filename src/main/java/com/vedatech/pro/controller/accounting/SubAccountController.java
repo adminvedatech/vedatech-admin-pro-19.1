@@ -29,7 +29,7 @@ public class SubAccountController {
 
 //-------------------Create a Bank Account--------------------------------------------------------
 
-    @RequestMapping(value = "/addSubAccount/", method = RequestMethod.POST)
+    @RequestMapping(value = "/addSubAccount", method = RequestMethod.POST)
     public ResponseEntity<SubAccount> createUser(@RequestBody SubAccount subAccount, UriComponentsBuilder ucBuilder) {
 
         System.out.println("SUBACCOUNT " + subAccount.toString());
@@ -111,7 +111,7 @@ public class SubAccountController {
 
     //-------------------Retrieve All Sub-Accounts--------------------------------------------------------
 
-    @RequestMapping(value = "/getAllSubAccounts/", method = RequestMethod.GET)
+    @RequestMapping(value = "/getAllSubAccounts", method = RequestMethod.GET)
     public ResponseEntity<List<SubAccount>> getAllSubAcc() {
         HttpHeaders headers = new HttpHeaders();
         List<SubAccount> accountNames = (List<SubAccount>) subAccountService.findAll();

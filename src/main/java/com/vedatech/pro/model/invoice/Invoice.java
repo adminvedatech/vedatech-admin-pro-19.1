@@ -2,7 +2,6 @@ package com.vedatech.pro.model.invoice;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vedatech.pro.model.BaseEntity;
-import com.vedatech.pro.model.contabilidad.Poliza;
 import com.vedatech.pro.model.customer.Customer;
 import com.vedatech.pro.model.product.Product;
 import com.vedatech.pro.model.supplier.Supplier;
@@ -11,10 +10,7 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -34,6 +30,7 @@ public class Invoice extends BaseEntity {
     private BigDecimal total;
     private BigDecimal pago;
     private String folio;
+    private Boolean payment;
 
     @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name="customer_id")
@@ -54,8 +51,8 @@ public class Invoice extends BaseEntity {
     @JoinColumn(name = "products_id")
     private List<Product> products;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "invoices_id")
-    private List<Poliza> polizas;
+//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JoinColumn(name = "invoices_id")
+//    private List<Poliza> polizas;
 
 }

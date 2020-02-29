@@ -2,7 +2,6 @@ package com.vedatech.pro.repository.accounting;
 
 
 import com.vedatech.pro.model.accounting.SubAccount;
-import com.vedatech.pro.model.contabilidad.SubCuenta;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

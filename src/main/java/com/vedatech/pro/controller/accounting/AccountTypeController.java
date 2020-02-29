@@ -30,7 +30,7 @@ public class AccountTypeController {
 
 //-------------------Retrieve All Accounts Type--------------------------------------------------------
 
-    @RequestMapping(value = "/getAllAccountsType/", method = RequestMethod.GET)
+    @RequestMapping(value = "/getAllAccountsType", method = RequestMethod.GET)
     public ResponseEntity<List<AccountingType>> getAllSubAcc() {
         HttpHeaders headers = new HttpHeaders();
         List<AccountingType> accountNames = (List<AccountingType>) accountingTypeService.findAll();

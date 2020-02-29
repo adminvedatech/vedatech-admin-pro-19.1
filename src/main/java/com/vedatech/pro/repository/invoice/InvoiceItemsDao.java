@@ -1,5 +1,6 @@
 package com.vedatech.pro.repository.invoice;
 
+import com.vedatech.pro.model.invoice.Invoice;
 import com.vedatech.pro.model.invoice.InvoiceItems;
 import com.vedatech.pro.model.invoice.SalesByProduct;
 import org.springframework.data.jpa.repository.Query;
@@ -14,5 +15,6 @@ public interface InvoiceItemsDao extends CrudRepository<InvoiceItems, Long> {
 
     @Query("SELECT d.claveUnidad as claveUnidad, d.descripcion as descripcion, SUM(d.cantidad) as cantidad, sum(d.importe) as importe FROM InvoiceItems d GROUP BY d.claveUnidad")
     List<SalesByProduct> getDataSales();
+
 
 }

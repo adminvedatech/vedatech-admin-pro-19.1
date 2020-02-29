@@ -56,6 +56,7 @@ public class InvoiceController {
         Customer customer = new Customer();
         Invoice invoice = new Invoice();
         String message = "";
+        System.out.println("COMPROBANTE " + comprobante);
        try {
 
 
@@ -183,6 +184,42 @@ public class InvoiceController {
         }
 
     }
+
+    @RequestMapping(value = "/setTruePaymentInvoiceById/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Invoice> getInvoiceById(@PathVariable( value = "id") Long id) {
+
+
+        try {
+
+            Invoice findInvoiceById = invoiceDao.findInvoiceById(id);
+            findInvoiceById.setPayment(true);
+           Invoice paymentInvoice = invoiceDao.save(findInvoiceById);
+            return new ResponseEntity<Invoice>(paymentInvoice, HttpStatus.OK);
+        } catch (Exception e) {
+           // String message = "FAIL to upload !";
+            return new ResponseEntity<Invoice>(HttpStatus.EXPECTATION_FAILED);
+        }
+
+    }
+
+    @RequestMapping(value = "/setFalsePaymentInvoiceById/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Invoice> setFalsePaymentInvoiceById(@PathVariable( value = "id") Long id) {
+
+
+        try {
+
+            Invoice findInvoiceById = invoiceDao.findInvoiceById(id);
+            findInvoiceById.setPayment(false);
+            Invoice paymentInvoice = invoiceDao.save(findInvoiceById);
+            return new ResponseEntity<Invoice>(paymentInvoice, HttpStatus.OK);
+        } catch (Exception e) {
+            // String message = "FAIL to upload !";
+            return new ResponseEntity<Invoice>(HttpStatus.EXPECTATION_FAILED);
+        }
+
+    }
+
+
 
     public File convert(MultipartFile file) throws IOException {
         File convFile = new File(file.getOriginalFilename());

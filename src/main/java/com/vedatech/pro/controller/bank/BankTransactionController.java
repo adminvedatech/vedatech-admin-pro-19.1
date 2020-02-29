@@ -2,17 +2,18 @@ package com.vedatech.pro.controller.bank;
 
 
 import com.vedatech.pro.model.accounting.AccountPolicy;
-import com.vedatech.pro.model.accounting.AccountingType;
 import com.vedatech.pro.model.accounting.SubAccount;
 import com.vedatech.pro.model.bank.Bank;
 import com.vedatech.pro.model.bank.BankTransaction;
+import com.vedatech.pro.model.bank.BankingMovement;
 import com.vedatech.pro.repository.accounting.AccountPolicyDao;
 import com.vedatech.pro.repository.accounting.AccountingTypeDao;
 import com.vedatech.pro.repository.accounting.SubAccountDao;
 import com.vedatech.pro.repository.bank.BankDao;
 import com.vedatech.pro.repository.bank.BankTransactionDao;
-import com.vedatech.pro.service.bank.beanreader.BankTransactionDtoService;
+import com.vedatech.pro.service.bank.BankTransactionDtoService;
 import com.vedatech.pro.service.bank.transaction.BankTransactionService;
+import com.vedatech.pro.service.bank.transaction.BankingMovementsService;
 import org.hibernate.exception.JDBCConnectionException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,7 @@ public class BankTransactionController {
      HttpHeaders headers = new HttpHeaders();
 
      public final BankTransactionService bankTransactionService;
+     public final BankingMovementsService bankingMovementsService;
      public final BankTransactionDtoService bankTransactionDtoService;
      public final BankTransactionDao bankTransactionDao;
      public final BankDao bankDao;
@@ -36,8 +38,15 @@ public class BankTransactionController {
      public final AccountPolicyDao accountPolicyDao;
      public final AccountingTypeDao accountingTypeDao;
 
-    public BankTransactionController(BankTransactionService bankTransactionService, BankTransactionDtoService bankTransactionDtoService, BankTransactionDao bankTransactionDao, BankDao bankDao, SubAccountDao subAccountDao, AccountPolicyDao accountPolicyDao, AccountingTypeDao accountingTypeDao) {
+    public BankTransactionController(BankTransactionService bankTransactionService,
+        BankTransactionDtoService bankTransactionDtoService,
+        BankingMovementsService bankingMovementsService,
+        BankTransactionDao bankTransactionDao,
+        BankDao bankDao, SubAccountDao subAccountDao,
+        AccountPolicyDao accountPolicyDao,
+        AccountingTypeDao accountingTypeDao) {
         this.bankTransactionService = bankTransactionService;
+        this.bankingMovementsService = bankingMovementsService;
         this.bankTransactionDtoService = bankTransactionDtoService;
         this.bankTransactionDao = bankTransactionDao;
         this.bankDao = bankDao;
@@ -89,6 +98,31 @@ public class BankTransactionController {
 
 
     }
+
+
+    //------------------- Create a Banking Movement --------------------------------------------------------
+
+    @RequestMapping(value = "/add-banking-movement", method = RequestMethod.POST)
+    public ResponseEntity<String> createBankingMovement(@RequestBody BankingMovement bankingMovement) {
+
+        try {
+            headers.set("success ", "se grabaron los datos con exito");
+            BankingMovement saveBankingMovements = bankingMovementsService.save(bankingMovement);
+//            bankTransactionDtoService.deleteById(id);
+//            calcSumPolicy(saveBankTrans);
+            return new ResponseEntity<String>(headers, HttpStatus.OK);
+
+        }catch (JDBCConnectionException e){
+            headers.set("error ", "se encontraron problemas en el servidor trate de nuevo");
+            return new ResponseEntity<String>(headers, HttpStatus.CONFLICT);
+
+        }
+
+
+    }
+
+
+
 
     public void calcSumPolicy(BankTransaction bankTransaction) {
 

@@ -1,21 +1,20 @@
 package com.vedatech.pro.model.bank;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vedatech.pro.model.BaseEntity;
+import com.vedatech.pro.model.accounting.Poliza;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Lob;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 
 @Getter
 @Setter
 @Entity
-@Table(name = "bank_transaction_dto")
+@Table(name = "transaction")
 public class BankTransactionDto extends BaseEntity {
 
     @Column
@@ -41,10 +40,10 @@ public class BankTransactionDto extends BaseEntity {
     @Column
     private String sucursal;
 
-    @Column
+    @Column(name = "deposit")
     private Double depositos;
 
-    @Column
+    @Column(name = "withdraw")
     private Double retiros;
 
     @Column
@@ -56,6 +55,16 @@ public class BankTransactionDto extends BaseEntity {
     @Lob
     @Column(name = "description_details")
     private String DescripcionDetallada;
+
+    @Column(columnDefinition="bit default 0")
+    private Boolean isContable;
+
+//    @OneToOne(fetch= FetchType.LAZY)
+//    @JoinColumn(name="poliza_id")
+//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//    Poliza poliza;
+
+
 
 
     @Override

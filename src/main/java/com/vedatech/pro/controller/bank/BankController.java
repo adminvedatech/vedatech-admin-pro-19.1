@@ -42,7 +42,7 @@ public class BankController {
 
     @RequestMapping(value = "/addBankAccount/", method = RequestMethod.POST)
     public ResponseEntity<String> createUser(@RequestBody Bank bank, UriComponentsBuilder ucBuilder) {
-        System.out.println("Creating User ");
+        System.out.println("Creating Bank Account ");
 
 
         SubAccount subAccount2 = subAccountDao.findById(bank.getSubAccount().getId()).get();
@@ -50,7 +50,7 @@ public class BankController {
 
             /*Verifica si existe un numero de cuenta con el mismo numero*/
         if (bankDao.findBankByAccountNumber(bank.getAccountNumber()) != null ||  bankDao.existsBanksBySubAccount_AccountNumber(subAccount2.getAccountNumber())) {
-            System.out.println("A User with name " + bank.getNameBank() + " " + bank.getAccountNumber() + " already exist");
+            System.out.println("A Bank Account with name " + bank.getNameBank() + " " + bank.getAccountNumber() + " already exist");
             HttpHeaders headers = new HttpHeaders();
             headers.set("error ", "bank account or Number Account already exist please verfiy");
             String message ="La Cuenta Bancaria o La Subcuenta Contable ya existe";
@@ -87,22 +87,72 @@ public class BankController {
     }
 
 
+    //-------------------Create a Bank Account with out SubAccount--------------------------------------------------------
+
+    @RequestMapping(value = "/add/", method = RequestMethod.POST)
+    public ResponseEntity<String> createBankAccount(@RequestBody Bank bank, UriComponentsBuilder ucBuilder) {
+        System.out.println("Creating Bank Account " + bank);
+
+        /*Verifica si existe un numero de cuenta con el mismo numero*/
+      /*  if (bankDao.findBankByAccountNumber(bank.getAccountNumber()) != null ) {
+            System.out.println("A Bank Account with name " + bank.getNameBank() + " " + bank.getAccountNumber() + " already exist");
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("error ", "bank account or Number Account already exist please verfiy");
+            String message ="La Cuenta Bancaria o La Subcuenta Contable ya existe";
+            headers.set(message, "El numero de Cuenta o La Subcuenta Contable ya existe!");
+            return new ResponseEntity<String>(message, headers, HttpStatus.CONFLICT);
+        }
+*/
+        /*Se van agregar los datos de la cuenta bancaria*/
+        try {
+
+            /* Se busca la subcuenta para agregar a la cuenta bancaria*/
+         //   SubAccount subAccount = subAccountService.findById(bank.getSubAccount().getId()).get();
+            bank.setBalanceToday(bank.getBalance());
+            bankService.save(bank);
+        //    subAccount.setBalance( bank.getBalance());
+         //   subAccountService.save(subAccount);
+
+        }catch (JDBCConnectionException e){
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("error","Error al grabar datos en el servidor intente de nuevo");
+
+            return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+
+        }
+
+
+        Bank newBank = bankDao.findBankByAccountNumber(bank.getAccountNumber());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("accepted ok","bank account is ok");
+
+        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+    }
+
+
+
+
+
     //------------------- Update a Bank Account --------------------------------------------------------
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     public ResponseEntity<Bank> updateUser(@RequestBody Bank bank) {
 
+        System.out.println("BANK " + bank.getBalance());
+
         try {
             //   Bank currentBankAcc = bankService.findBankById(id);
-            /* Se busca la subcuenta para agregar a la cuenta bancaria*/
+            /* Se busca la subcuenta para agregar a la cuenta bancaria
             SubAccount subAccount = subAccountService.findById(bank.getSubAccount().getId()).get();
              if (bankTransactionDao.getTotalBankTransBalance(bank.getId()) != null ) {
                  bank.setBalanceToday(bank.getBalance().add( bankTransactionDao.getTotalBankTransBalance(bank.getId())));
-             }
+             }*/
              bank.setBalanceToday(bank.getBalance());
             bankService.save(bank);
-            subAccount.setBalance( bankDao.balanceBySubacc(bank.getSubAccount().getId()));
-            subAccountService.save(subAccount);
+           // subAccount.setBalance( bankDao.balanceBySubacc(bank.getSubAccount().getId()));
+         //   subAccountService.save(subAccount);
             HttpHeaders headers = new HttpHeaders();
             headers.set("success", "the account is update success");
             return new ResponseEntity<Bank>(bank,headers, HttpStatus.OK);
@@ -120,7 +170,7 @@ public class BankController {
 
     //-------------------Retrieve All Bank Accounts--------------------------------------------------------
 
-    @RequestMapping(value = "/getAllBankAccounts/", method = RequestMethod.GET)
+    @RequestMapping(value = "/getAllBankAccounts", method = RequestMethod.GET)
     public ResponseEntity<List<Bank>> listAllUsers() {
         HttpHeaders headers = new HttpHeaders();
         List<Bank> bankAccounts = bankService.findAll();
@@ -152,7 +202,7 @@ public class BankController {
     }
 
 
-    //-------------------Create a Bank Account--------------------------------------------------------
+    //-------------------Get Bank By Account--------------------------------------------------------
 
     @RequestMapping(value = "/getBankAccount", method = RequestMethod.POST)
     public ResponseEntity<Bank> searchBank(@RequestBody Long bank) {
@@ -163,7 +213,18 @@ public class BankController {
 
     }
 
+    //-------------------Get Bank By Id--------------------------------------------------------
+
+    @RequestMapping(value = "/getBankAccountById/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Bank> searchBankById(@PathVariable (value = "id") Long id) {
+        System.out.println("Creating User ");
+
+        Bank bankResult = bankDao.findBankById(id);
+        return new ResponseEntity<Bank>(bankResult, HttpStatus.OK);
 
     }
+
+
+}
 
 

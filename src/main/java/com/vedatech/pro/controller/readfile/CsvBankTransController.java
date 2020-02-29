@@ -1,9 +1,8 @@
 package com.vedatech.pro.controller.readfile;
 
-import com.vedatech.pro.model.bank.BankTransaction;
 import com.vedatech.pro.model.bank.BankTransactionDto;
 import com.vedatech.pro.service.ReadFileService;
-import com.vedatech.pro.service.bank.beanreader.BankTransactionDtoService;
+import com.vedatech.pro.service.bank.BankTransactionDtoService;
 import com.vedatech.pro.service.bank.beanreader.BeanReaderBankTransService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
